@@ -1,6 +1,6 @@
 # Vagrant for ansible
 
-This project is deigned to run multiple ubuntu VMs with vagrant for testing ansible scripts
+This project is deigned to run multiple linux VMs with vagrant for testing ansible scripts
 
 ## Assumptions:
 - create box ubuntu2204 for ubuntu 22.04 and with ssh on port `2204` without password (configured ansible `host` to that)

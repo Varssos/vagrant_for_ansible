@@ -16,7 +16,7 @@ for arg in "$@"; do
     case "$arg" in
         all)
             ALL=true
-            VERSIONS=("ubuntu2204" "ubuntu2404" "ubuntu2504")
+            VERSIONS=("ubuntu2204" "ubuntu2404" "ubuntu2504" "linuxmint22wilma" "linuxmint223zena")
             ;;
         clean)
             CLEAN=true

@@ -12,7 +12,16 @@ Vagrant.configure("2") do |config|
     "ubuntu2504" => {
       box: "bento/ubuntu-25.04",
       host_port: 2504
+    },
+    "linuxmint22wilma" => {
+      box: "archman/linuxmint",
+      host_port: 3220
+    },
+    "linuxmint223zena" => {
+      box: "mgldvd/linuxmint-22.3-zena",
+      host_port: 3223
     }
+
   }
 
   boxes.each do |name, opts|
