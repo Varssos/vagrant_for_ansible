@@ -13,6 +13,11 @@ vagrant --version
 Vagrant 2.4.9
 ```
 
+- Installed VM providers. Examples are VirtualBox, VMware, Hyper-V. Recommended:
+```
+tasks/virtualbox.yml
+```
+
 ## Run
 ```
 ./run.sh
@@ -20,4 +25,14 @@ Vagrant 2.4.9
 ./run.sh all clean
 # Check help
 ./run.sh help
+```
+
+
+## Known issues
+- Not set provider
+```
+vagrant up --provider=virtualbox
+# or
+sudo apt-get install -y linux-headers-$(uname -r) build-essential dkms
+sudo /sbin/vboxconfig
 ```
