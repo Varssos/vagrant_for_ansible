@@ -13,9 +13,14 @@ Vagrant.configure("2") do |config|
       box: "bento/ubuntu-25.04",
       host_port: 2504
     },
-    "linuxmint22wilma" => {
-      box: "archman/linuxmint",
-      host_port: 3220
+    # Some issues with sudo apt update on start
+    # "linuxmint22wilma" => {
+    #   box: "archman/linuxmint",
+    #   host_port: 3220
+    # }, 
+    "linuxmint222zara" => {
+      box: "mgldvd/linuxmint-22.2-zara",
+      host_port: 3222
     },
     "linuxmint223zena" => {
       box: "mgldvd/linuxmint-22.3-zena",
@@ -57,15 +62,15 @@ Vagrant.configure("2") do |config|
           passwd
 
         # user
-        useradd -m -s /bin/bash ubuntu_user || true
-        echo "ubuntu_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+        useradd -m -s /bin/bash test_user || true
+        echo "test_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-        mkdir -p /home/ubuntu_user/.ssh
-        chmod 700 /home/ubuntu_user/.ssh
-        chown -R ubuntu_user:ubuntu_user /home/ubuntu_user/.ssh
+        mkdir -p /home/test_user/.ssh
+        chmod 700 /home/test_user/.ssh
+        chown -R test_user:test_user /home/test_user/.ssh
 
         # empty password
-        passwd -d ubuntu_user
+        passwd -d test_user
 
         # SSH config
         mkdir -p /run/sshd
