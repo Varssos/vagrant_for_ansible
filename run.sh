@@ -1,23 +1,34 @@
 #!/bin/bash
 
-VERSIONS=("ubuntu2404") # Default to testing only the latest LTS version
+LATEST_UBUNTU_LTS_VERSION="ubuntu2404"
+LATEST_LINUX_MINT_VERSION="linuxmint223zena"
+ALL_VERSIONS=("ubuntu2204" "ubuntu2404" "ubuntu2504" "linuxmint222zara" "linuxmint223zena")
+VERSIONS=("$LATEST_LINUX_MINT_VERSION") # Default to testing only on the latest Linux Mint version
 ALL=false
 CLEAN=false
 
 print_help() {
     echo "Usage: $0 [options]"
     echo "Options:"
-    echo "  all     Run tests for all versions (22.04, 24.04, 25.04)"
-    echo "  clean   Destroy existing Vagrant VMs before starting new ones"
-    echo "  help    Show this help message"
+    echo "  ubuntu   Run tests for the latest Ubuntu LTS version (${LATEST_UBUNTU_LTS_VERSION})"
+    echo "  all      Run tests for all VMs like ${ALL_VERSIONS[*]}"
+    echo "  clean    Destroy existing Vagrant VMs before starting new ones"
+    echo "  help     Show this help message"
+    echo " Examples:"
+    echo "  $0                 # Test only on the latest Linux Mint version (default)"
+    echo "  $0 ubuntu          # Test only on the latest Ubuntu LTS version"
+    echo "  $0 all             # Test on all defined versions"
+    echo "  $0 clean all       # Clean up existing VMs and test on all versions"
 }
 
 for arg in "$@"; do
     case "$arg" in
+        ubuntu)
+            VERSIONS=("$LATEST_UBUNTU_LTS_VERSION")
+            ;;
         all)
             ALL=true
-            # VERSIONS=("ubuntu2204" "ubuntu2404" "ubuntu2504" "linuxmint22wilma" "linuxmint222zara" "linuxmint223zena" )
-            VERSIONS=("ubuntu2204" "ubuntu2404" "ubuntu2504" "linuxmint222zara" "linuxmint223zena" )
+            VERSIONS=("${ALL_VERSIONS[@]}")
             ;;
         clean)
             CLEAN=true
@@ -56,6 +67,6 @@ if [ "$ALL" = true ]; then
     echo "Running Ansible tests for all versions..."
     ansible-playbook test_run.yml
 else
-    echo "Running Ansible tests for Ubuntu 24.04..."
-    ansible-playbook test_run.yml --limit "ubuntu2404"
+    echo "Running Ansible tests for ${VERSIONS[0]}..."
+    ansible-playbook test_run.yml --limit "${VERSIONS[0]}"
 fi

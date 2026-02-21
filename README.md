@@ -21,18 +21,10 @@ tasks/virtualbox.yml
 ## Run
 ```
 ./run.sh
-# or clean for all vms
-./run.sh all clean
-# Check help
+# Check help for more detailed info
 ./run.sh help
 ```
 
 
 ## Known issues
-- Not set provider
-```
-vagrant up --provider=virtualbox
-# or
-sudo apt-get install -y linux-headers-$(uname -r) build-essential dkms
-sudo /sbin/vboxconfig
-```
+Check `iac_and_automation/vagrant/known_issues/`
