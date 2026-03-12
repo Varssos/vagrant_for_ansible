@@ -25,6 +25,10 @@ Vagrant.configure("2") do |config|
     "linuxmint223zena" => {
       box: "mgldvd/linuxmint-22.3-zena",
       host_port: 3223
+    },
+    "debian131" => {
+      box: "bento/debian-13.1",
+      host_port: 4131
     }
 
   }
