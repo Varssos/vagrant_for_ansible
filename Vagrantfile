@@ -9,19 +9,19 @@ Vagrant.configure("2") do |config|
       box: "bento/ubuntu-24.04",
       host_port: 2404
     },
-    "ubuntu2504" => {
-      box: "bento/ubuntu-25.04",
-      host_port: 2504
-    },
+    # "ubuntu2504" => {
+    #   box: "bento/ubuntu-25.04",
+    #   host_port: 2504
+    # },
     # Some issues with sudo apt update on start
     # "linuxmint22wilma" => {
     #   box: "archman/linuxmint",
     #   host_port: 3220
     # }, 
-    "linuxmint222zara" => {
-      box: "mgldvd/linuxmint-22.2-zara",
-      host_port: 3222
-    },
+    # "linuxmint222zara" => {
+    #   box: "mgldvd/linuxmint-22.2-zara",
+    #   host_port: 3222
+    # },
     "linuxmint223zena" => {
       box: "mgldvd/linuxmint-22.3-zena",
       host_port: 3223
