@@ -126,12 +126,12 @@ fi
 
 # Return to project root and run ansible tests
 cd "${ROOT_DIR}/.."
+ansible-galaxy install -r requirements.yml
+
 if [ "$ALL" = true ]; then
     echo "Running Ansible tests for all versions..."
-    ansible-galaxy install -r requirements.yml
     ansible-playbook test_run.yml
 else
     echo "Running Ansible tests for ${VERSIONS[0]}..."
-    ansible-galaxy install -r requirements.yml
     ansible-playbook test_run.yml --limit "${VERSIONS[0]}"
 fi

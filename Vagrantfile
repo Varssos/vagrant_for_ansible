@@ -37,6 +37,7 @@ Vagrant.configure("2") do |config|
     config.vm.define name do |vm|
       vm.vm.box = opts[:box]
       vm.vm.hostname = name
+      vm.vm.boot_timeout = 600
 
       vm.vm.network "forwarded_port",
         guest: 22,
@@ -62,7 +63,6 @@ Vagrant.configure("2") do |config|
           nano \
           python3 \
           python3-pip \
-          ansible-core \
           passwd
 
         # user
