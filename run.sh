@@ -33,6 +33,7 @@ print_help() {
     echo "  $0                        # Test only on the latest Linux Mint version (default)"
     echo "  $0 ubuntu                 # Test only on the latest Ubuntu LTS version"
     echo "  $0 debian                 # Test only on the latest Debian version"
+    echo "  $0 ubuntu2204             # Test only on a specific version from ALL_VERSIONS"
     echo "  $0 all                    # Test on all defined versions"
     echo "  $0 halt all               # Halt stuck VMs, then re-run tests on all"
     echo "  $0 clean all              # Full rebuild — use only when provisioning is broken"
@@ -69,9 +70,21 @@ for arg in "$@"; do
             exit 0
             ;;
         *)
-            echo "Unknown option: $arg"
-            print_help
-            exit 1
+            # Check if argument matches one of ALL_VERSIONS
+            matched=false
+            for v in "${ALL_VERSIONS[@]}"; do
+                if [[ "$arg" == "$v" ]]; then
+                    VERSIONS=("$arg")
+                    matched=true
+                    break
+                fi
+            done
+            if [[ "$matched" == false ]]; then
+                echo "Unknown option: $arg"
+                echo "Valid versions: ${ALL_VERSIONS[*]}"
+                print_help
+                exit 1
+            fi
             ;;
     esac
 done
