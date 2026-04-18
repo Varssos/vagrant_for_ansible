@@ -7,7 +7,8 @@ Vagrant.configure("2") do |config|
     },
     "ubuntu2404" => {
       box: "bento/ubuntu-24.04",
-      host_port: 2404
+      host_port: 2404,
+      disk_size: "48GB"
     },
     # "ubuntu2504" => {
     #   box: "bento/ubuntu-25.04",
@@ -49,6 +50,10 @@ Vagrant.configure("2") do |config|
         vb.cpus = 2
       end
 
+      if opts[:disk_size]
+        vm.disksize.size = opts[:disk_size]
+      end
+
       vm.vm.provision "shell", inline: <<-SHELL
         export DEBIAN_FRONTEND=noninteractive
 
@@ -63,7 +68,20 @@ Vagrant.configure("2") do |config|
           nano \
           python3 \
           python3-pip \
-          passwd
+          passwd \
+          cloud-guest-utils
+
+        # Extend LVM to fill disk (vagrant-disksize resizes the VirtualBox disk,
+        # but partition + LVM must be expanded manually inside the VM)
+        PART=$(pvdisplay 2>/dev/null | grep 'PV Name' | awk '{print $3}' | head -1)
+        if [ -n "$PART" ]; then
+          DISK=$(echo "$PART" | sed 's/[0-9]*$//')
+          PARTNUM=$(echo "$PART" | grep -o '[0-9]*$')
+          growpart "$DISK" "$PARTNUM" || true
+          pvresize "$PART" || true
+          lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv || true
+          resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv || true
+        fi
 
         # user
         useradd -m -s /bin/bash test_user || true
