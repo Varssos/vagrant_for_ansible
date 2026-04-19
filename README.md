@@ -14,6 +14,12 @@ vagrant --version
 Vagrant 2.4.9
 ```
 
+- Vagrant plugin vagrant-disksize
+```
+vagrant plugin install vagrant-disksize
+vagrant plugin list
+```
+
 - Installed VM provider. Examples: VirtualBox, VMware, Hyper-V. Recommended:
   Install via the `virtualbox` role: `roles/virtualbox/`
 
