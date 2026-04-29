@@ -3,7 +3,8 @@ Vagrant.configure("2") do |config|
   boxes = {
     "ubuntu2204" => {
       box: "bento/ubuntu-22.04",
-      host_port: 2204
+      host_port: 2204,
+      disk_size: "200GB"
     },
     "ubuntu2404" => {
       box: "bento/ubuntu-24.04",
@@ -14,6 +15,11 @@ Vagrant.configure("2") do |config|
     #   box: "bento/ubuntu-25.04",
     #   host_port: 2504
     # },
+    "ubuntu2604" => {
+      box: "varssos/ubuntu2604",
+      host_port: 2604,
+      disk_size: "48GB"
+    },
     # Some issues with sudo apt update on start
     # "linuxmint22wilma" => {
     #   box: "archman/linuxmint",

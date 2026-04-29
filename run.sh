@@ -1,9 +1,9 @@
 #!/bin/bash
 
-LATEST_UBUNTU_LTS_VERSION="ubuntu2404"
+LATEST_UBUNTU_LTS_VERSION="ubuntu2604"
 LATEST_LINUX_MINT_VERSION="linuxmint223zena"
 LATEST_DEBIAN_VERSION="debian131"
-ALL_VERSIONS=("ubuntu2204" "ubuntu2404" "linuxmint223zena" "debian131") # ubuntu2504 linuxmint222zara currently not supported
+ALL_VERSIONS=("ubuntu2204" "ubuntu2404" "ubuntu2604" "linuxmint223zena" "debian131") # ubuntu2504 linuxmint222zara currently not supported
 VERSIONS=("$LATEST_LINUX_MINT_VERSION") # Default to testing only on the latest Linux Mint version
 ALL=false
 CLEAN=false
