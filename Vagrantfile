@@ -16,10 +16,15 @@ Vagrant.configure("2") do |config|
     #   host_port: 2504
     # },
     "ubuntu2604" => {
-      box: "varssos/ubuntu2604",
+      box: "bento/ubuntu-26.04",
       host_port: 2604,
       disk_size: "48GB"
     },
+    # "ubuntu2604" => {
+    #   box: "varssos/ubuntu2604",
+    #   host_port: 2604,
+    #   disk_size: "48GB"
+    # },
     # Some issues with sudo apt update on start
     # "linuxmint22wilma" => {
     #   box: "archman/linuxmint",
