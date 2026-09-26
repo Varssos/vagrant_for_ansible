@@ -138,13 +138,17 @@ if [ "$SNAPSHOT_SAVE" = true ]; then
 fi
 
 # Return to project root and run ansible tests
-cd "${ROOT_DIR}/.."
-ansible-galaxy install -r requirements.yml
+cd "${ROOT_DIR}/.." || { echo "Failed to cd to project root"; exit 1; }
+if [[ ! -f requirements.yml || ! -f test_run.yml ]]; then
+    echo "requirements.yml or test_run.yml not found in $(pwd) - run this script from vagrant_for_ansible/"
+    exit 1
+fi
+ansible-galaxy install -r requirements.yml || { echo "ansible-galaxy install failed"; exit 1; }
 
 if [ "$ALL" = true ]; then
     echo "Running Ansible tests for all versions..."
-    ansible-playbook test_run.yml
+    ansible-playbook test_run.yml || exit 1
 else
     echo "Running Ansible tests for ${VERSIONS[0]}..."
-    ansible-playbook test_run.yml --limit "${VERSIONS[0]}"
+    ansible-playbook test_run.yml --limit "${VERSIONS[0]}" || exit 1
 fi
