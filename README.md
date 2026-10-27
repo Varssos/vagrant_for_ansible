@@ -20,30 +20,36 @@ vagrant plugin install vagrant-disksize
 vagrant plugin list
 ```
 
-- Installed VM provider. Examples: VirtualBox, VMware, Hyper-V. Recommended:
-  Install via the `virtualbox` role: `roles/virtualbox/`
+- Installed VM provider (VirtualBox, installed manually — there is no role for it). Kernel module `vboxdrv` must be loaded:
+```
+lsmod | grep vboxdrv
+VBoxManage --version   # must not print "vboxdrv kernel module is not loaded"
+```
+If it is not loaded, follow the next section.
 
-- Only on fresh system! Setup vagrant as default, config secure boot, MOK etc
+### VirtualBox kernel module (fresh system / after kernel update)
+Without it Vagrant fails with `No usable default provider could be found` or
+`VirtualBox is complaining that the kernel module is not loaded`.
+
+1. Install build requirements (`dkms` rebuilds the module on every kernel update):
+```
+sudo apt install dkms build-essential linux-headers-$(uname -r)
+```
+2. Check whether Secure Boot is on: `mokutil --sb-state`.
+   - `SecureBoot disabled`: skip to step 4.
+   - `SecureBoot enabled`: the module must be signed with an enrolled MOK key (steps 3a-3c). `/var/lib/shim-signed/mok/` is empty until the key is created.
+3. Secure Boot only:
+   - a. Create the key: `sudo update-secureboot-policy --new-key` (the `Can't load .rnd into RNG` warning is harmless)
+   - b. Schedule enrollment and set a one-time password: `sudo mokutil --import /var/lib/shim-signed/mok/MOK.der`. Do not use `update-secureboot-policy --enroll-key`: it only works for DKMS modules and prints `No DKMS modules installed` for VirtualBox, which builds its module via `vboxconfig`.
+   - c. `sudo reboot`. At boot the blue MOK Manager appears (press a key before GRUB times out): Enroll MOK → Continue → Yes → enter the password from step 3b.
+4. Build, sign and load the module:
 ```
 sudo /sbin/vboxconfig
 sudo modprobe vboxdrv
 VBoxManage list hostinfo
-vagrant status
-
-# or
-sudo mokutil --import /var/lib/shim-signed/mok/MOK.der
+mokutil --test-key /var/lib/shim-signed/mok/MOK.der   # Secure Boot only: "is already enrolled"
 ```
-Later have to:
-1. `sudo reboot`
-2. At boot, a blue MOK Manager screen will appear (may need a keypress to catch it before GRUB times out) — select Enroll MOK → Continue → Yes, then enter the password you set during mokutil --import.
-3. Let it finish and boot into Linux normally.
-4. Verify and retry:
-```
-mokutil --test-key /var/lib/shim-signed/mok/MOK.der
-sudo modprobe vboxdrv
-VBoxManage list hostinfo
-vagrant status
-```
+5. Verify: `vagrant up --provider=virtualbox ubuntu2404` (or `./run.sh ubuntu2404`).
 
 ## Run
 ```
